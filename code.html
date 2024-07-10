@@ -36,7 +36,7 @@
 </html>
 
 <script>
-   setTimeout(() => {
+    setTimeout(() => {
         function buildTree(rootNode) {
             // 用于递归遍历和树构建
             function traverse(node) {
@@ -68,7 +68,7 @@
             let eleNode = []
             let result = []
             if (node?.children?.length > 1) {
-                eleNode = node.children.filter((item) => { return item?.node?.tagName !== 'SCRIPT' })
+                eleNode = node.children.filter((item) => { return item?.node?.tagName === 'DIV' })
                 // console.log(eleNode, 'node');
                 if (eleNode && eleNode.length > 1) {
                     // 将eleNode中元素两两组合，得到一个新的数组
@@ -77,7 +77,11 @@
                             result.push([eleNode[i], eleNode[j]]);
                         }
                     }
-                    // console.log(result, 'result');
+                    console.log(result, 'result');
+                    result.map((item) => {
+                        // console.log(item[0].node, '1');
+                        getBorderSize(item[0].node, item[1].node)
+                    })
                 }
             }
             if (Array.isArray(eleNode)) {
@@ -103,16 +107,22 @@
         }
 
         // 计算两个元素边距 入参 [ele1, ele2]
-        let ele1 = document.querySelector('#op')
-        let ele2 = document.querySelector('#as')
         function getBorderSize(ele1, ele2) {
-           let ele1Rect = getElementViewportCoordinates(ele1)
-           let ele2Rect = getElementViewportCoordinates(ele2)
-           console.log(ele1Rect, ele2Rect);
-           spacingRight
+            let ele1Rect = getElementViewportCoordinates(ele1)
+            let ele2Rect = getElementViewportCoordinates(ele2)
+            let spacingLevel
+            let spacingVertical
+            console.log(ele1Rect, ele2Rect);
+            // 此时有水平边距
+            if (ele2Rect.left > ele1Rect.right) {
+                spacingLevel = ele2Rect.left - ele1Rect.right
+            }
+            // 此时有垂直边距
+            if (ele2Rect.top > ele1Rect.bottom) {
+                spacingVertical = ele2Rect.top - ele1Rect.bottom
+            }
+            console.log(spacingLevel, spacingVertical, 'spacing');
         }
-        getBorderSize(ele1, ele2)
-
 
     }, 2000)
 
