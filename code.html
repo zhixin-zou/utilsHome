@@ -124,7 +124,49 @@
             console.log(spacingLevel, spacingVertical, 'spacing');
         }
 
+
+
+
+        function drawDashedLine(element1, element2) {
+        const rect1 = element1.getBoundingClientRect();
+        const rect2 = element2.getBoundingClientRect();
+
+        const line = document.createElement('div');
+        line.classList.add('dashed-line');
+
+        // 计算虚线的位置和长度
+        if (rect1.bottom <= rect2.top) {
+            // element1 在 element2 上方
+            line.style.top = rect1.bottom + 'px';
+            line.style.left = rect1.left + 'px';
+            line.style.width = (rect1.width + rect2.width) + 'px';
+        } else if (rect1.top >= rect2.bottom) {
+            // element1 在 element2 下方
+            line.style.top = rect2.bottom + 'px';
+            line.style.left = rect1.left + 'px';
+            line.style.width = (rect1.width + rect2.width) + 'px';
+        } else if (rect1.right <= rect2.left) {
+            // element1 在 element2 左侧
+            line.style.top = rect1.top + 'px';
+            line.style.left = rect1.right + 'px';
+            line.style.height = (rect1.height + rect2.height) + 'px';
+        } else if (rect1.left >= rect2.right) {
+            // element1 在 element2 右侧
+            line.style.top = rect1.top + 'px';
+            line.style.left = rect2.right + 'px';
+            line.style.height = (rect1.height + rect2.height) + 'px';
+        }
+
+        document.body.appendChild(line);
+    }
+
+    const div1 = document.querySelector('#op');
+    const div2 = document.querySelector('#as');
+
+    drawDashedLine(div1, div2);
+
     }, 2000)
+
 
 
 </script>
@@ -161,5 +203,13 @@
         height: 300px;
         margin: 10px;
         float: left;
+    }
+    .dashed-line {
+        border: 1px dashed black;
+        /* 虚线样式 */
+        position: absolute;
+        /* 绝对定位 */
+        pointer-events: none;
+        /* 不响应鼠标事件 */
     }
 </style>
