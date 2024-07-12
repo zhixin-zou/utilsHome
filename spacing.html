@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box" id="box1">Div 1</div>
+    <div class="box2" id="box2">Div 2</div>
+    
+    
+</body>
+
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // 获取两个 div 元素
+  const box1 = document.getElementById("box1");
+  const box2 = document.getElementById("box2");
+
+  // 计算两个 div 之间的水平方向距离
+  const deltaX = box2.offsetLeft - box1.offsetLeft;
+
+  // 创建连接线元素
+  const connector = document.createElement("div");
+  connector.classList.add("connector");
+
+  // 设置连接线的位置和长度
+  connector.style.top = (box1.offsetTop + box1.offsetHeight / 2) + "px";
+  connector.style.left = (box1.offsetLeft + box1.offsetWidth / 2) + "px";
+  connector.style.width = deltaX + "px";
+
+  // 将连接线添加到页面中
+  document.body.appendChild(connector);
+});
+
+
+</script>
+
+<style>
+ .box {
+  width: 100px;
+  height: 50px;
+  border: 1px solid black; /* 实线边框，可以根据需要调整样式 */
+  margin: 20px; /* 外边距，用来设置两个盒子之间的间距 */
+  position: absolute; /* 绝对定位，方便计算位置 */
+}
+.box2 {
+  width: 100px;
+  height: 50px;
+  border: 1px solid black; /* 实线边框，可以根据需要调整样式 */
+  margin: 500px; /* 外边距，用来设置两个盒子之间的间距 */
+  position: absolute; /* 绝对定位，方便计算位置 */
+}
+.connector {
+  position: absolute;
+  border-bottom: 1px dashed black; /* 虚线边框 */
+  transform-origin: 0 0; /* 设置变换的原点为左上角 */
+}
+
+
+    .connector {
+        position: absolute;
+        border-bottom: 1px dashed black;
+        /* 虚线边框 */
+        transform-origin: 0 0;
+        /* 设置变换的原点为左上角 */
+    }
+</style>
