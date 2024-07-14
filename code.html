@@ -21,7 +21,7 @@
         <div id="op" style="background-color: yellow;">
             123121
         </div>
-        <div id="op" style="background-color: green;">
+        <div id="qw" style="background-color: green;">
             123121
         </div>
         <div id="op" style="background-color: blue;">
@@ -112,7 +112,7 @@
             let ele2Rect = getElementViewportCoordinates(ele2)
             let spacingLevel
             let spacingVertical
-            console.log(ele1Rect, ele2Rect);
+            // console.log(ele1Rect, ele2Rect);
             // 此时有水平边距
             if (ele2Rect.left > ele1Rect.right) {
                 spacingLevel = ele2Rect.left - ele1Rect.right
@@ -121,52 +121,49 @@
             if (ele2Rect.top > ele1Rect.bottom) {
                 spacingVertical = ele2Rect.top - ele1Rect.bottom
             }
-            console.log(spacingLevel, spacingVertical, 'spacing');
         }
 
+        document.addEventListener('click', function () {
+            let element1 = document.querySelector('#op')
+            let element2 = document.querySelector('#qw')
+            console.log(element1, element2, 'dajdaksjdsjkds');
+            getLine(element1, element2)
 
+        })
 
+        function getLine(ele1, ele2) {
 
-        function drawDashedLine(element1, element2) {
-        const rect1 = element1.getBoundingClientRect();
-        const rect2 = element2.getBoundingClientRect();
+            let ele1Rect = getElementViewportCoordinates(ele1)
+            let ele2Rect = getElementViewportCoordinates(ele2)
 
-        const line = document.createElement('div');
-        line.classList.add('dashed-line');
+            // 计算两个 div 之间的水平方向距离
+            const deltaX = ele2Rect.left - ele1Rect.right;
+            // 计算两个 div 之间的垂直方向距离
+            const deltaY = ele2Rect.top - ele1Rect.bottom;
+            console.log(deltaY, 'deltaY');
 
-        // 计算虚线的位置和长度
-        if (rect1.bottom <= rect2.top) {
-            // element1 在 element2 上方
-            line.style.top = rect1.bottom + 'px';
-            line.style.left = rect1.left + 'px';
-            line.style.width = (rect1.width + rect2.width) + 'px';
-        } else if (rect1.top >= rect2.bottom) {
-            // element1 在 element2 下方
-            line.style.top = rect2.bottom + 'px';
-            line.style.left = rect1.left + 'px';
-            line.style.width = (rect1.width + rect2.width) + 'px';
-        } else if (rect1.right <= rect2.left) {
-            // element1 在 element2 左侧
-            line.style.top = rect1.top + 'px';
-            line.style.left = rect1.right + 'px';
-            line.style.height = (rect1.height + rect2.height) + 'px';
-        } else if (rect1.left >= rect2.right) {
-            // element1 在 element2 右侧
-            line.style.top = rect1.top + 'px';
-            line.style.left = rect2.right + 'px';
-            line.style.height = (rect1.height + rect2.height) + 'px';
+            // 创建连接线元素
+            const connectorLevel = document.createElement("div");
+            const connectorVertical = document.createElement("div");
+            connectorLevel.classList.add("connector");
+            connectorVertical.classList.add("connector");
+
+            // 设置连接线的位置和长度(水平方向时)
+            connectorLevel.style.top = (ele1Rect.top + ele1Rect.height / 2) + "px";
+            connectorLevel.style.left = (ele1Rect.right) + "px";
+            connectorLevel.style.width = deltaX + "px";
+
+            // 设置连接线的位置和长度(垂直方向时)
+            connectorVertical.style.top = (ele1Rect.bottom) + "px";
+            connectorVertical.style.left = (ele1Rect.right - ele1Rect.width / 2) + "px";
+            connectorVertical.style.height = deltaY + "px";
+
+            // 将连接线添加到页面中
+            document.body.appendChild(connectorLevel);
+            document.body.appendChild(connectorVertical);
         }
-
-        document.body.appendChild(line);
-    }
-
-    const div1 = document.querySelector('#op');
-    const div2 = document.querySelector('#as');
-
-    drawDashedLine(div1, div2);
 
     }, 2000)
-
 
 
 </script>
@@ -198,18 +195,27 @@
         float: left;
     }
 
-    #as {
+    #as, #qw {
         width: 200px;
         height: 300px;
         margin: 10px;
         float: left;
     }
-    .dashed-line {
-        border: 1px dashed black;
-        /* 虚线样式 */
+
+    .connector {
         position: absolute;
-        /* 绝对定位 */
-        pointer-events: none;
-        /* 不响应鼠标事件 */
+        border-bottom: 1px dashed black;
+        /* 虚线边框 */
+        transform-origin: 0 0;
+        /* 设置变换的原点为左上角 */
+    }
+
+    .connector {
+        position: absolute;
+        border-left: 1px dashed black;
+        /* 虚线边框 */
+        transform-origin: 0 0;
+        /* 设置变换的原点为左上角 */
+
     }
 </style>
